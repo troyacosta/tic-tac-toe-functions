@@ -6,10 +6,19 @@
  *
  * valid options include: '1', 'one', '2', or 'two'.
  * The function should be case insensitive, so 'one' and 'ONE' should both
- * result in true.
+ * result in 1.
  */
 function validateGameType(gameTypeString) {
-
+	if (typeof gameTypeString === 'object') {
+		return false;
+	}
+	else if (gameTypeString == 1 || gameTypeString.toLowerCase() === 'one') {
+		return 1;
+	}
+	else if (gameTypeString == 2 || gameTypeString.toLowerCase() === 'two') {
+		return 2;
+	}
+	return false;
 }
 
 /*
@@ -18,14 +27,26 @@ function validateGameType(gameTypeString) {
  * false if the name is not valid.
  */
 function validateName(name) {
-
+	if (typeof name === 'object' || name === '' || typeof name == 'number') {
+		return false;
+	}
+	var nameFormat = name.toLowerCase();
+	for (var i = 0; i < nameFormat.length; i++) {
+		if ((nameFormat.charCodeAt(i) < 97 || nameFormat.charCodeAt(i) > 122) && nameFormat.charAt(i)!=='-' && nameFormat.charAt(i)!==' ') {
+			return false;
+		}
+	}
+	return name;
+	
 }
-
 /*
  * Randomly generates and returns a name for a computer player.
  */
 function generateComputerName() {
-
+	var namesArray = ['Bob', 'Randy', 'Larry', 'Roger', 'Terry', 'Donald'];
+	var randomNumber = parseInt(Math.random() * namesArray.length);
+	var name = namesArray[randomNumber];
+	return name;
 }
 
 /*
@@ -50,7 +71,23 @@ function generateComputerName() {
  * exception.
  */
 function parseMove(moveString) {
-
+	if (typeof moveString !== 'string') {
+    	throw 'Invalid input: the move must be in the format \"x y\"'
+    }
+	var move = moveString.split(' ');
+	if (move.length > 2) {
+		throw 'Invalid input: the move must be in the format \"x y\"'
+	}
+	var x = parseInt(move[0])-1;
+    var y = parseInt(move[1])-1;
+    var moveObject = {
+    	x: x,
+    	y: y
+    }
+    if  (x > 2 || x < 0 || y > 2 || y < 0 || isNaN(x) || isNaN(y)) {
+    	throw 'Invalid input: the move must be in the format \"x y\"'
+    }
+    return moveObject;
 }
 
 /*
@@ -68,7 +105,13 @@ function parseMove(moveString) {
  * If there are no errors then the function should return the move object.
  */
 function validateMove(moveObject, gameBoard) {
-
+	if (moveObject.x > 2 || moveObject.x < 0 || moveObject.y < 0 || moveObject.y > 2)  {
+		throw 'Invalid move: the coordinates are outside the game board';
+	}
+	if () {
+		throw 'Invalid move: that spot is already taken\' exception.';
+	}
+return moveObject;
 }
 
 /*
